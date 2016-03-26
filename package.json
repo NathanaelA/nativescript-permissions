@@ -1,0 +1,31 @@
+{
+  "name": "nativescript-permissions",
+  "version": "1.0.0",
+  "description": "A NativeScript plugin to deal with Android permissions",
+  "main": "permissions.js",
+  "nativescript": {
+	"platforms": {
+		"android": "1.8.0"
+	}
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathanaela/nativescript-permissions.git"
+  },
+  "keywords": [
+    "NativeScript", "permissions", "android", "android 6"
+  ],
+  "author": {
+    "name": "Nathanael Anderson",
+    "email": "nathan@master-technology.com"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/nathanaela/nativescript-permissions/blob/master/LICENSE"
+  },
+  "bugs": {
+    "url": "https://github.com/nathanaela/nativescript-permissions/issues"
+  },
+  "homepage": "https://github.com/nathanaela/nativescript-permissions",
+  "readmeFilename": "README.md"
+}

@@ -1,0 +1,12 @@
+{
+  "nativescript": {
+    "id": "org.nativescript.demo",
+    "tns-android": {
+      "version": "next"
+    }
+  },
+  "dependencies": {
+    "nativescript-permissions": "file:..",
+    "tns-core-modules": "http://nativescript.rocks/master/tns-core-modules-master.tgz",
+  }
+}
