@@ -7,15 +7,17 @@ This is released under the MIT License, meaning you are free to include this in 
 
 ## Sample Snapshot
 ![Sample](docs/permissions.gif)
+
 You can see me do something that requests permissions; then I deny the permissions; the second time through you will see the toast about why I need these permissions; then I accept them.
 
 ## Requirements
 This requires NativeScript 2.0 to actually work properly on Android 6+
 
 The required low level support is available in the master branch and if you would like to play with it now, you can install the pre-2.0 masters by:
-1. npm install http://nativescript.rocks/master/tns-core-modules-master.tgz
-2. tns platform remove android
-3. tns platform add android@next
+
+- npm install http://nativescript.rocks/master/tns-core-modules-master.tgz
+- tns platform remove android
+- tns platform add android@next
 
 ## Installation 
 
