@@ -8,12 +8,12 @@ This is released under the MIT License, meaning you are free to include this in 
 ## Sample Snapshot
 ![Sample](docs/permissions.gif)
 
-You can see me do something that requests permissions; then I deny the permissions; the second time through you will see the toast about why I need these permissions; then I accept them.
+You can see me do something that requests permissions; then I deny the permissions.  The second time through you will see the **toast** about why I think I need these permissions; then I finally accept them.
 
 ## Requirements
-This requires NativeScript 2.0 to actually work properly on Android 6+
+Unfortunately the required support didn't quite make it into 1.7 of NativeScript.   So this requires NativeScript 1.8+ to actually work properly
 
-The required low level support is available in the master branch and if you would like to play with it now, you can install the pre-2.0 masters by:
+The required low level support is available in the master branch and if you would like to play with it now, you can install the masters by doing each of the following steps:
 
 - npm install http://nativescript.rocks/master/tns-core-modules-master.tgz
 - tns platform remove android
@@ -34,7 +34,7 @@ var permissions = require( "nativescript-permissions" );
 
 
 ## You ask, how exactly does this help?
-This wraps up the entire Android 6 permissions system into a nice easy to use promise; you can have multiple permissions pending and each one will resolve properly.
+This wraps up the entire Android 6 permissions system into a nice easy to use promise. In addition, you can also have multiple permissions pending and each one will resolve properly.
 
 ```js
 var permissions = require('naitvescript-permissions');
@@ -58,15 +58,15 @@ This simplifies the checks and allows you to have two courses of action dependin
 **permissionName** - The permission you are requesting; will return true of false if you already have been granted the permission.
 
 #### \<Promise> = permissions.requestPermission(permissionName[, explanation]);
-**\<Promise>** - the .then() path will be permission granted, the .catch() will be permission denied
-**permissionName** - The permission you are requestion
+**\<Promise>** - the **.then()** path will be permission granted, the **.catch()** will be permission denied
+**permissionName** - The permission you are requesting
 **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
 
 
 ## Notes
 Because this uses support.v4; this code works on ALL versions that nativescript supports currently.  So you can start coding this into your app at this point and your app should work on everything.
 
-You still need to put all the permissions you need in the manifest as usual.    On Android 6 you ALSO must ask the user for permissions each time you go to do anything that needs a "dangerous" permission.  You can see all the permissions at [https://developer.android.com/reference/android/Manifest.permission.html](https://developer.android.com/reference/android/Manifest.permission.html).
+You still need to put all the permissions you need in the manifest as usual, even on Android 6.    On Android 6 you ALSO must ask the user for permissions each time you go to do anything that needs a "dangerous" permission.  You can see all the permissions at [https://developer.android.com/reference/android/Manifest.permission.html](https://developer.android.com/reference/android/Manifest.permission.html).
 
 Warning: even though the application has been granted permissions once, does NOT mean the app still has permissions; the user can revoke the "dangerous" permissions even while the app is running.  So again YOU MUST use requestPermissions each time.  If the app still has the permissions you will be granted it immediately without the user seeing a dialog.
 
