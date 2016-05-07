@@ -1,12 +1,18 @@
 {
-  "nativescript": {
-    "id": "org.nativescript.demo",
-    "tns-android": {
-      "version": "next"
-    }
-  },
-  "dependencies": {
-    "nativescript-permissions": "file:..",
-    "tns-core-modules": "http://nativescript.rocks/master/tns-core-modules-master.tgz",
-  }
+	"nativescript": {
+		"id": "org.nativescript.demo",
+		"tns-android": {
+			"version": "2.0.0"
+		}
+	},
+	"dependencies": {
+		"nativescript-permissions": "file:.."
+	},
+	"devDependencies": {
+		"babel-traverse": "6.8.0",
+		"babel-types": "6.8.1",
+		"babylon": "6.8.0",
+		"filewalker": "0.1.2",
+		"lazy": "1.0.11"
+	}
 }
