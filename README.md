@@ -37,7 +37,7 @@ var permissions = require( "nativescript-permissions" );
 This wraps up the entire Android 6 permissions system into a nice easy to use promise. In addition, you can also have multiple permissions pending and each one will resolve properly.
 
 ```js
-var permissions = require('naitvescript-permissions');
+var permissions = require('nativescript-permissions');
 permissions.requestPermission(android.Manifest.permission.READ_CONTACTS, "I need these permissions because I'm cool")
   .then(function() {
      console.log("Woo Hoo, I have the power!");
