@@ -62,16 +62,16 @@ This simplifies the checks and allows you to have two courses of action dependin
 - **permissionName** - The permission you are requesting.
 - **returns** Boolean - true or false
 
-#### \<Promise> = permissions.requestPermission(permissionName[, explanation]);
+#### \<Promise> = permissions.requestPermission(permissionName, explanation);
 - **\<Promise>** - the **.then()** path will be permission granted, the **.catch()** will be permission denied
-- **permissionName** - The permission you are requesting
-- **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
+- **permissionName** - The permission you are requesting - REQUIRED
+- **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want. - OPTIONAL
 
 
-#### \<Promise> = permissions.requestPermissions(\[permissionName, permissionName, ...][, explanation]);
+#### \<Promise> = permissions.requestPermissions(\[permissionName, permissionName, ...], explanation);
 - **\<Promise>** - the **.then()** path will mean ALL permissions were granted the **.catch()** means some or all permission were denied
-- **permissionName(s)** - The permission you are requesting
-- **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
+- **permissionName(s)** - The ARRAY of permissions you are requesting - REQUIRED
+- **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want. - OPTIONAL
 
 The granted or failed promise will return an object keyed to the your permissionName Like so:
 
