@@ -21,13 +21,7 @@ I also do contract work; so if you have a module you want built for NativeScript
 You can see me do something that requests permissions; then I deny the permissions.  The second time through you will see the **toast** about why I think I need these permissions; then I finally accept them.
 
 ## Requirements
-Unfortunately the required support didn't quite make it into 1.7 of NativeScript.   So this requires NativeScript 1.8+ to actually work properly
-
-The required low level support is available in the master branch and if you would like to play with it now, you can install the masters by doing each of the following steps:
-
-- npm install http://nativescript.rocks/master/tns-core-modules-master.tgz
-- tns platform remove android
-- tns platform add android@next
+This requires NativeScript 2.0 or greater
 
 ## Installation 
 
@@ -65,13 +59,28 @@ This simplifies the checks and allows you to have two courses of action dependin
 ## API
 ### Functions
 #### permissions.hasPermission(permissionName);
-**permissionName** - The permission you are requesting; will return true of false if you already have been granted the permission.
+**permissionName** - The permission you are requesting.
+**returns** Boolean - true or false
 
 #### \<Promise> = permissions.requestPermission(permissionName[, explanation]);
 **\<Promise>** - the **.then()** path will be permission granted, the **.catch()** will be permission denied
 **permissionName** - The permission you are requesting
 **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
 
+
+#### \<Promise> = permissions.requestPermissions(\[permissionName, permissionName, ...][, explanation]);
+**\<Promise>** - the **.then()** path will be permission granted, the **.catch()** will be permission denied
+**permissionName(s)** - The permission you are requesting
+**explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
+
+The granted or failed promise will return an object keyed to the your permissionName Like so:
+{
+  "contact": true,
+  "camera": false
+}
+
+If you are granted and receive all permissions, then I will called the granted permission promise.  if you failed to get even one of the permissions then I will call the failed permission; then you can use the object list to determine which permission(s) you failed to be granted by the end user.
+So in the above example object, this would have been passed to the failed promise because you failed to get the camera access.
 
 ## Notes
 Because this uses support.v4; this code works on ALL versions that nativescript supports currently.  So you can start coding this into your app at this point and your app should work on everything.

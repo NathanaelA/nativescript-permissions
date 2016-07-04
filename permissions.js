@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.0.0                                      Nathan@master-technology.com
+ * Version 1.1.0                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -36,17 +36,42 @@ application.android.on(application.AndroidApplication.activityRequestPermissions
     // get current promise set
     var promises = pendingPromises[args.requestCode];
 
-    // Delete it
+    // We have either gotten a promise from somewhere else or a bug has occurred and android has called us twice
+    // In either case we will ignore it...
+    if (typeof promises.granted !== 'function') {
+        return;
+    }
+
+    // Delete it, since we no longer need to track it
     delete pendingPromises[args.requestCode];
 
-    // Check the status of the permission
-    if (args.grantResults.length > 0) {
-        if (args.grantResults[0] === android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            promises.granted();
-            return;
+    var trackingResults = promises.results;
+
+    var length = args.permissions.length;
+    for (var i=0;i<length;i++) {
+        // Convert back to JS String
+        var name = args.permissions[i].toString();
+
+        //noinspection RedundantIfStatementJS
+        if (args.grantResults[i] === android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            trackingResults[name] = true;
+        } else {
+            trackingResults[name] = false;
         }
     }
-    promises.failed();
+
+    // Any Failures
+    var failureCount=0;
+    for (var key in trackingResults) {
+        if (!trackingResults.hasOwnProperty(key)) continue;
+        if (trackingResults[key] === false) failureCount++;
+    }
+
+    if (failureCount === 0) {
+        promises.granted(trackingResults);
+    } else {
+        promises.failed(trackingResults);
+    }
 
 });
 
@@ -86,39 +111,77 @@ function hasPermission(perm) {
 }
 
 
-function request(perm, explanation) {
+function request(inPerms, explanation) {
+    var perms;
+    if (Array.isArray(inPerms)) {
+        perms = inPerms;
+    } else {
+        perms = [inPerms];
+    }
 
     return new Promise(function(granted, failed) {
-
-        // Check if we already have permissions, then we can grant automatically
-        if (hasPermission(perm)) {
-            granted();
-            return;
-        } else if (android.os.Build.VERSION.SDK_INT < 23) {
-            // If we are on API < 23 and we get a false back, then this means they forgot to put a manifest permission in...
-            failed();
-            return;
-        }
-
-
-        // Check if we need to show a explanation , if so show it.
-        if (android.support.v4.app.ActivityCompat.shouldShowRequestPermissionRationale(application.android.foregroundActivity, perm)) {
-            if (typeof explanation === "function") {
-                explanation();
-            } else if (explanation && explanation.length) {
-                var toast = android.widget.Toast.makeText(application.android.context, explanation, android.widget.Toast.LENGTH_LONG);
-                toast.setGravity((48 | 1), 0, 0);
-                toast.show();
+        var totalFailures = 0, totalSuccesses=0;
+        var totalCount = perms.length;
+        var permTracking = [], permResults = {};
+        for (var i = 0; i < totalCount; i++) {
+            // Check if we already have permissions, then we can grant automatically
+            if (hasPermission(perms[i])) {
+                permTracking[i] = true;
+                permResults[perms[i]] = true;
+                totalSuccesses++;
+            } else  {
+                permTracking[i] = false;
+                permResults[perms[i]] = false;
+                totalFailures++;
             }
         }
 
-        // Ask for permissions
-        promiseId++;
-        pendingPromises[promiseId] = {granted: granted, failed: failed};
+        // If we have all perms, we don't need to continue
+        if (totalSuccesses === totalCount) {
+            granted(permResults);
+            return;
+        }
 
-        android.support.v4.app.ActivityCompat.requestPermissions(application.android.foregroundActivity, [perm], promiseId);
+        if (totalFailures === totalCount && android.os.Build.VERSION.SDK_INT < 23) {
+            // If we are on API < 23 and we get a false back, then this means they forgot to put a manifest permission in...
+            failed(permResults);
+            return;
+        }
+
+        // Check if we need to show a explanation , if so show it only once.
+        for (i = 0; i < totalCount; i++) {
+            if (permTracking[i] === false) {
+                if (android.support.v4.app.ActivityCompat.shouldShowRequestPermissionRationale(application.android.foregroundActivity, perms[i])) {
+                    if (typeof explanation === "function") {
+                        explanation();
+                    } else if (explanation && explanation.length) {
+                        var toast = android.widget.Toast.makeText(application.android.context, explanation, android.widget.Toast.LENGTH_LONG);
+                        toast.setGravity((48 | 1), 0, 0);
+                        toast.show();
+                    }
+
+                    // We don't need to show the explanation more than one time, if we even need to at all
+                    break;
+                }
+            }
+        }
+
+        // Build list of Perms we actually need to request
+        var requestPerms = [];
+        for (i=0;i<totalCount;i++) {
+            if (permTracking[i] === false) {
+                requestPerms.push(perms[i]);
+            }
+        }
+            // Ask for permissions
+            promiseId++;
+            pendingPromises[promiseId] = {granted: granted, failed: failed, results: permResults};
+
+            android.support.v4.app.ActivityCompat.requestPermissions(application.android.foregroundActivity, requestPerms, promiseId);
+
     });
 }
 
 exports.hasPermission = hasPermission;
 exports.requestPermission = request;
+exports.requestPermissions = request;
