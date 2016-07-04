@@ -59,19 +59,19 @@ This simplifies the checks and allows you to have two courses of action dependin
 ## API
 ### Functions
 #### permissions.hasPermission(permissionName);
-**permissionName** - The permission you are requesting.
-**returns** Boolean - true or false
+- **permissionName** - The permission you are requesting.
+- **returns** Boolean - true or false
 
 #### \<Promise> = permissions.requestPermission(permissionName[, explanation]);
-**\<Promise>** - the **.then()** path will be permission granted, the **.catch()** will be permission denied
-**permissionName** - The permission you are requesting
-**explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
+- **\<Promise>** - the **.then()** path will be permission granted, the **.catch()** will be permission denied
+- **permissionName** - The permission you are requesting
+- **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
 
 
 #### \<Promise> = permissions.requestPermissions(\[permissionName, permissionName, ...][, explanation]);
-**\<Promise>** - the **.then()** path will mean ALL permissions were granted the **.catch()** means some or all permission were denied
-**permissionName(s)** - The permission you are requesting
-**explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
+- **\<Promise>** - the **.then()** path will mean ALL permissions were granted the **.catch()** means some or all permission were denied
+- **permissionName(s)** - The permission you are requesting
+- **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
 
 The granted or failed promise will return an object keyed to the your permissionName Like so:
 
@@ -82,8 +82,8 @@ The granted or failed promise will return an object keyed to the your permission
 }
 ```
 
-If you are granted and receive all permissions, then I will called the granted permission promise.  if you failed to get even one of the permissions then I will call the failed permission; then you can use the object list to determine which permission(s) you failed to be granted by the end user.
-So in the above example object, this would have been passed to the failed promise because you failed to get the camera access.
+If you are granted and receive all permissions, then it will resolve with the granted permission promise.  If you failed to get even one of the permissions then it will then resolve the failed/catch promise; then you can use the object list to determine which permission(s) you failed and were granted by the end user.
+So in the above example object, this would have been resolved to the failed promise because you failed to get the camera access.
 
 ## Notes
 Because this uses support.v4; this code works on ALL versions that nativescript supports currently.  So you can start coding this into your app at this point and your app should work on everything.
