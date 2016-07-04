@@ -69,15 +69,18 @@ This simplifies the checks and allows you to have two courses of action dependin
 
 
 #### \<Promise> = permissions.requestPermissions(\[permissionName, permissionName, ...][, explanation]);
-**\<Promise>** - the **.then()** path will be permission granted, the **.catch()** will be permission denied
+**\<Promise>** - the **.then()** path will mean ALL permissions were granted the **.catch()** means some or all permission were denied
 **permissionName(s)** - The permission you are requesting
 **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want.
 
 The granted or failed promise will return an object keyed to the your permissionName Like so:
+
+```js
 {
   "contact": true,
   "camera": false
 }
+```
 
 If you are granted and receive all permissions, then I will called the granted permission promise.  if you failed to get even one of the permissions then I will call the failed permission; then you can use the object list to determine which permission(s) you failed to be granted by the end user.
 So in the above example object, this would have been passed to the failed promise because you failed to get the camera access.
