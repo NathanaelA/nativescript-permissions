@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.1.0                                      Nathan@master-technology.com
+ * Version 1.1.1                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -82,9 +82,7 @@ application.android.on(application.AndroidApplication.activityRequestPermissions
  * @returns {boolean}
  */
 function hasSupportVersion4() {
-    if (!android.support || !android.support.v4 || !android.support.v4.content
-        || !android.support.v4.content.ContextCompat
-        || !android.support.v4.content.ContextCompat.checkSelfPermission) {
+    if (!android.support || !android.support.v4 || !android.support.v4.content || !android.support.v4.content.ContextCompat || !android.support.v4.content.ContextCompat.checkSelfPermission) {
         console.log("No v4 support");
         return false;
     }
@@ -142,7 +140,7 @@ function request(inPerms, explanation) {
             return;
         }
 
-        if (totalFailures === totalCount && android.os.Build.VERSION.SDK_INT < 23) {
+        if (totalFailures > 0 && android.os.Build.VERSION.SDK_INT < 23) {
             // If we are on API < 23 and we get a false back, then this means they forgot to put a manifest permission in...
             failed(permResults);
             return;
@@ -156,7 +154,7 @@ function request(inPerms, explanation) {
                         explanation();
                     } else if (explanation && explanation.length) {
                         var toast = android.widget.Toast.makeText(application.android.context, explanation, android.widget.Toast.LENGTH_LONG);
-                        toast.setGravity((48 | 1), 0, 0);
+                        toast.setGravity((49), 0, 0);
                         toast.show();
                     }
 
@@ -173,11 +171,12 @@ function request(inPerms, explanation) {
                 requestPerms.push(perms[i]);
             }
         }
-            // Ask for permissions
-            promiseId++;
-            pendingPromises[promiseId] = {granted: granted, failed: failed, results: permResults};
 
-            android.support.v4.app.ActivityCompat.requestPermissions(application.android.foregroundActivity, requestPerms, promiseId);
+        // Ask for permissions
+        promiseId++;
+        pendingPromises[promiseId] = {granted: granted, failed: failed, results: permResults};
+
+        android.support.v4.app.ActivityCompat.requestPermissions(application.android.foregroundActivity, requestPerms, promiseId);
 
     });
 }

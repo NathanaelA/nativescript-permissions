@@ -1,7 +1,8 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded">
   <StackLayout>
-    <Label text="Tap the button" class="title"/>
-    <Button text="TAP" tap="{{ tapAction }}" />
+    <Label text="Ask for" class="title"/>
+    <Button text="Single Permission" tap="{{ tapAction }}" />
+    <Button text="Multi Permissions" tap="{{ multiTapAction }}" />
     <Label text="{{ message }}" class="message" textWrap="true"/>
   </StackLayout>
 </Page>
