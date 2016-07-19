@@ -1,5 +1,5 @@
 var observable = require("data/observable");
-var permissions = require("./permissions.js");
+var permissions = require("nativescript-permissions");
 
 var HelloWorldModel = (function (_super) {
     __extends(HelloWorldModel, _super);
