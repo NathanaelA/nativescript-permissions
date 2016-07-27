@@ -14,11 +14,11 @@
 
 
 // If this isn't a Android platform we will exit and do nothing.
-if (!android) {
+var application = require('application');
+
+if (!application.android) {
     return;
 }
-
-var application = require('application');
 
 if (typeof application.AndroidApplication.activityRequestPermissionsEvent === 'undefined') {
     throw new Error("You must be using at least version 2.0 of the TNS runtime and core-modules!");
