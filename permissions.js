@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.1.1                                      Nathan@master-technology.com
+ * Version 1.1.2                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -14,7 +14,7 @@
 
 
 // If this isn't a Android platform we will exit and do nothing.
-if (!android) {
+if (!global.android) {
     return;
 }
 
