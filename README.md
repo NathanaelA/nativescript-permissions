@@ -5,6 +5,9 @@
 # nativescript-permissions
 A NativeScript plugin to deal with Android permissions (mainly for API 23+/Android 6+)
 
+Has a dummy library for iOS so that if ask it for any android permissions; it will resolve every one of them as true...
+
+
 ## License
 
 This is released under the MIT License, meaning you are free to include this in any type of program -- However for entities that need a support contract, changes, enhancements and/or a commercial license please contact me at [http://nativescript.tools](http://nativescript.tools).

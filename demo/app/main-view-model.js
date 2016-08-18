@@ -10,6 +10,7 @@ var HelloWorldModel = (function (_super) {
     HelloWorldModel.prototype.tapAction = function () {
         var that = this;
         this.set("message", "Checking permission!");
+        console.log("Permission REQUESTED is", android.Manifest.permission.READ_CONTACTS);
         var perm = permissions.requestPermission(android.Manifest.permission.READ_CONTACTS, "I need Read Contact!");
         perm.then(function() {
             that.set("message", "WooHoo you granted me permissions!");
@@ -21,6 +22,11 @@ var HelloWorldModel = (function (_super) {
     HelloWorldModel.prototype.multiTapAction = function() {
         var that = this;
         this.set("message", "Checking permissions!");
+        console.log("Requested permissions:", [
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE]);
             permissions.requestPermission([
                 android.Manifest.permission.CAMERA,
                 android.Manifest.permission.ACCESS_FINE_LOCATION,

@@ -12,69 +12,67 @@
 /* jshint camelcase: false */
 /* global UIDevice, UIDeviceOrientation, getElementsByTagName, android */
 
+    var application = require('application');
 
-// If this isn't a Android platform we will exit and do nothing.
-if (!global.android) {
-    return;
-}
-
-var application = require('application');
-
-if (typeof application.AndroidApplication.activityRequestPermissionsEvent === 'undefined') {
-    throw new Error("You must be using at least version 2.0 of the TNS runtime and core-modules!");
-}
+    if (typeof application.AndroidApplication.activityRequestPermissionsEvent === 'undefined') {
+        throw new Error("You must be using at least version 2.0 of the TNS runtime and core-modules!");
+    }
 
 // Variables to track any pending promises
-var pendingPromises = {}, promiseId = 3000;
+    var pendingPromises = {}, promiseId = 3000;
 
 
-/**
- * This handles the results of getting the permissions!
- */
-application.android.on(application.AndroidApplication.activityRequestPermissionsEvent, function(args) {
+    /**
+     * This handles the results of getting the permissions!
+     */
+    application.android.on(application.AndroidApplication.activityRequestPermissionsEvent, function (args) {
 
-    // get current promise set
-    var promises = pendingPromises[args.requestCode];
+        // get current promise set
+        var promises = pendingPromises[args.requestCode];
 
-    // We have either gotten a promise from somewhere else or a bug has occurred and android has called us twice
-    // In either case we will ignore it...
-    if (typeof promises.granted !== 'function') {
-        return;
-    }
-
-    // Delete it, since we no longer need to track it
-    delete pendingPromises[args.requestCode];
-
-    var trackingResults = promises.results;
-
-    var length = args.permissions.length;
-    for (var i=0;i<length;i++) {
-        // Convert back to JS String
-        var name = args.permissions[i].toString();
-
-        //noinspection RedundantIfStatementJS
-        if (args.grantResults[i] === android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            trackingResults[name] = true;
-        } else {
-            trackingResults[name] = false;
+        // We have either gotten a promise from somewhere else or a bug has occurred and android has called us twice
+        // In either case we will ignore it...
+        if (typeof promises.granted !== 'function') {
+            return;
         }
-    }
 
-    // Any Failures
-    var failureCount=0;
-    for (var key in trackingResults) {
-        if (!trackingResults.hasOwnProperty(key)) continue;
-        if (trackingResults[key] === false) failureCount++;
-    }
+        // Delete it, since we no longer need to track it
+        delete pendingPromises[args.requestCode];
 
-    if (failureCount === 0) {
-        promises.granted(trackingResults);
-    } else {
-        promises.failed(trackingResults);
-    }
+        var trackingResults = promises.results;
 
-});
+        var length = args.permissions.length;
+        for (var i = 0; i < length; i++) {
+            // Convert back to JS String
+            var name = args.permissions[i].toString();
 
+            //noinspection RedundantIfStatementJS
+            if (args.grantResults[i] === android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                trackingResults[name] = true;
+            } else {
+                trackingResults[name] = false;
+            }
+        }
+
+        // Any Failures
+        var failureCount = 0;
+        for (var key in trackingResults) {
+            if (!trackingResults.hasOwnProperty(key)) continue;
+            if (trackingResults[key] === false) failureCount++;
+        }
+
+        if (failureCount === 0) {
+            promises.granted(trackingResults);
+        } else {
+            promises.failed(trackingResults);
+        }
+
+    });
+
+
+    exports.hasPermission = hasPermission;
+    exports.requestPermission = request;
+    exports.requestPermissions = request;
 
 
 /**
@@ -117,8 +115,8 @@ function request(inPerms, explanation) {
         perms = [inPerms];
     }
 
-    return new Promise(function(granted, failed) {
-        var totalFailures = 0, totalSuccesses=0;
+    return new Promise(function (granted, failed) {
+        var totalFailures = 0, totalSuccesses = 0;
         var totalCount = perms.length;
         var permTracking = [], permResults = {};
         for (var i = 0; i < totalCount; i++) {
@@ -127,7 +125,7 @@ function request(inPerms, explanation) {
                 permTracking[i] = true;
                 permResults[perms[i]] = true;
                 totalSuccesses++;
-            } else  {
+            } else {
                 permTracking[i] = false;
                 permResults[perms[i]] = false;
                 totalFailures++;
@@ -166,7 +164,7 @@ function request(inPerms, explanation) {
 
         // Build list of Perms we actually need to request
         var requestPerms = [];
-        for (i=0;i<totalCount;i++) {
+        for (i = 0; i < totalCount; i++) {
             if (permTracking[i] === false) {
                 requestPerms.push(perms[i]);
             }
@@ -180,7 +178,3 @@ function request(inPerms, explanation) {
 
     });
 }
-
-exports.hasPermission = hasPermission;
-exports.requestPermission = request;
-exports.requestPermissions = request;

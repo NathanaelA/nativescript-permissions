@@ -1,10 +1,13 @@
 {
   "nativescript": {
-    "id": "org.nativescript.demo"
+    "id": "org.nativescript.demo",
+    "tns-android": {
+      "version": "2.2.0"
+    }
   },
   "dependencies": {
     "nativescript-permissions": "file:..",
-    "tns-core-modules": "latest"
+    "tns-core-modules": "^2.2.0"
   },
   "devDependencies": {
     "babel-traverse": "6.8.0",
