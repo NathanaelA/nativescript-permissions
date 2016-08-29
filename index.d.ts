@@ -3,14 +3,9 @@
 //-------------------------
 
 declare module "nativescript-permissions" {
-  interface Permissions {
-    requestPermissions (permsission:string|Array<string>, explanation?:string):Promise<any>;
-  }
-  export var permissions:Permissions;
-}
 
-declare module "android" {
-  interface AndroidPermission {ACCESS_CHECKIN_PROPERTIES:string,
+  interface AndroidPermission {
+    ACCESS_CHECKIN_PROPERTIES:string,
     ACCESS_COARSE_LOCATION:string,
     ACCESS_FINE_LOCATION:string,
     ACCESS_LOCATION_EXTRA_COMMANDS:string,
@@ -127,7 +122,16 @@ declare module "android" {
     WRITE_SMS:string,
     WRITE_SYNC_SETTINGS:string
   }
-  export var Manifest:{
-    permission:AndroidPermission
+
+  interface Permissions {
+    requestPermissions (permissions:string|Array<string>, explanation?:string):Promise<any>;
+  }
+
+  // PUBLIC API
+  export var permissions:Permissions;
+  export var android:{
+    Manifest:{
+      permission:AndroidPermission
+    }
   };
 }
