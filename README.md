@@ -97,3 +97,4 @@ Warning: even though the application has been granted permissions once, does NOT
 
 In NativeScript when using the permissions names/strings in your code; they are accessed as: android.**Manifest**.permission.PERMISSION_NAME rather than the android.permission.PERMISSION_NAME that you would put inside the manifest and are listed on the Android documentation site listed above.
 
+The Android manifest that you need to put the permissions in also is located at `/app/App_Resources/Android/AndroidManifest.xml`
