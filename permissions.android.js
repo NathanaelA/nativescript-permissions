@@ -32,7 +32,7 @@
 
         // We have either gotten a promise from somewhere else or a bug has occurred and android has called us twice
         // In either case we will ignore it...
-        if (typeof promises.granted !== 'function') {
+        if (!promises || typeof promises.granted !== 'function') {
             return;
         }
 
