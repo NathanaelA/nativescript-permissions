@@ -9,5 +9,7 @@ declare module 'nativescript-permissions' {
 
   export function requestPermission(permission:any, explanation?:string):Promise<any>;
 
+  export function hasPermission(permission: any): boolean;
+
 }
 
