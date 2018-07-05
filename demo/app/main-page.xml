@@ -1,4 +1,4 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="pageLoaded" navigatingTo="onNavigatingTo" class="page">
   <StackLayout>
     <Label text="Ask for" class="title"/>
     <Button text="Single Permission" tap="{{ tapAction }}" />
