@@ -1,20 +1,29 @@
 {
   "name": "nativescript-permissions",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "A NativeScript plugin to deal with Android permissions",
   "main": "permissions",
 	"typings": "index.d.ts",
   "nativescript": {
 	"platforms": {
-		"android": "1.8.0"
-	}
+		"android": "2.0.0"
+	},
+    "plugin": {
+      "nan": "true",
+      "pan": "true",
+      "vue": "true",
+      "core3": "true",
+      "core4": "true",
+      "core6": "true",
+      "category": "Processing"
+    }
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/nathanaela/nativescript-permissions.git"
   },
   "keywords": [
-    "NativeScript", "permissions", "android", "android 6", "android 7", "android 8", "android 9"
+    "NativeScript", "permissions", "android", "android 6", "androidx"
   ],
   "author": {
     "name": "Nathanael Anderson",

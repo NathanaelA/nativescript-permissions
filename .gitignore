@@ -3,4 +3,3 @@
 /demo/platforms/
 *.tar
 *.tgz
-/demo/package-lock.json

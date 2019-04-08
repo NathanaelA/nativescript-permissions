@@ -5,6 +5,8 @@
 # nativescript-permissions
 A NativeScript plugin to deal with Android permissions (mainly for API 23+/Android 6+)
 
+Now has support for AndroidX (NativeScript 6.0) and still works all the way back to NativeScript 2.0
+
 Has a dummy library for iOS so that if ask it for any android permissions; it will resolve every one of them as true...
 
 
@@ -19,7 +21,7 @@ I also do contract work; so if you have a module you want built for NativeScript
 
 
 ## Sample Snapshot
-![Sample](docs/permissions.gif)
+![Sample](../docs/permissions.gif)
 
 You can see me do something that requests permissions; then I deny the permissions.  The second time through you will see the **toast** about why I think I need these permissions; then I finally accept them.
 
@@ -36,7 +38,7 @@ tns plugin add nativescript-permissions
 To use the module you just `require()` it:
 
 ```js
-var permissions = require( "nativescript-permissions" );
+const permissions = require( "nativescript-permissions" );
 ```
 
 
@@ -44,12 +46,12 @@ var permissions = require( "nativescript-permissions" );
 This wraps up the entire Android 6 permissions system into a nice easy to use promise. In addition, you can also have multiple permissions pending and each one will resolve properly.
 
 ```js
-var permissions = require('nativescript-permissions');
+const permissions = require('nativescript-permissions');
 permissions.requestPermission(android.Manifest.permission.READ_CONTACTS, "I need these permissions because I'm cool")
-  .then(function() {
+  .then( () => {
      console.log("Woo Hoo, I have the power!");
   })
-  .catch(function() {
+  .catch( () => {
      console.log("Uh oh, no permissions - plan B time!");
   });
 ```
@@ -89,7 +91,7 @@ If you are granted and receive all permissions, then it will resolve with the gr
 So in the above example object, this would have been resolved to the failed promise because you failed to get the camera access.
 
 ## Notes
-Because this uses support.v4; this code works on ALL versions that nativescript supports currently.  So you can start coding this into your app at this point and your app should work on everything.
+Because this uses support.v4 (or androidx); this code works on ALL versions that nativescript supports currently.  So you can start coding this into your app at this point and your app should work on everything.
 
 You still need to put all the permissions you need in the manifest as usual, even on Android 6.    On Android 6 you ALSO must ask the user for permissions each time you go to do anything that needs a "dangerous" permission.  You can see all the permissions at [https://developer.android.com/reference/android/Manifest.permission.html](https://developer.android.com/reference/android/Manifest.permission.html).
 
@@ -97,4 +99,4 @@ Warning: even though the application has been granted permissions once, does NOT
 
 In NativeScript when using the permissions names/strings in your code; they are accessed as: android.**Manifest**.permission.PERMISSION_NAME rather than the android.permission.PERMISSION_NAME that you would put inside the manifest and are listed on the Android documentation site listed above.
 
-The Android manifest that you need to put the permissions in also is located at `/app/App_Resources/Android/AndroidManifest.xml`
+The Android manifest that you need to put the permissions in also is located at `/app/App_Resources/Android/main/res/AndroidManifest.xml`
