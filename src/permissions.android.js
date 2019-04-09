@@ -78,10 +78,8 @@ application.android.on(application.AndroidApplication.activityRequestPermissions
 
 function setupSupport() {
 	if (hasAndroidX()) {
-		console.log("AndroidX.core");
 		androidSupport = androidx.core;
 	} else if (hasSupportVersion4()) {
-		console.log("Android.support.v4");
 		androidSupport = android.support.v4;
 	}
 }
@@ -100,7 +98,6 @@ exports.requestPermissions = request;
 function hasSupportVersion4() {
 	//noinspection JSUnresolvedVariable
 	if (!android.support || !android.support.v4 || !android.support.v4.content || !android.support.v4.content.ContextCompat || !android.support.v4.content.ContextCompat.checkSelfPermission) {
-		console.log("No v4 support");
 		return false;
 	}
 	return true;
@@ -114,7 +111,6 @@ function hasSupportVersion4() {
 function hasAndroidX() {
 	//noinspection JSUnresolvedVariable
 	if (!androidx || !androidx.core || !androidx.core.content || !androidx.core.content.ContextCompat || !androidx.core.content.ContextCompat.checkSelfPermission) {
-		console.log("No AndroidX");
 		return false;
 	}
 	return true;
