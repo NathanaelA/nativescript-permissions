@@ -9,6 +9,8 @@ Now has support for AndroidX (NativeScript 6.0) and still works all the way back
 
 Has a dummy library for iOS so that if ask it for any android permissions; it will resolve every one of them as true...
 
+This plugin also has built in support for the Android `WRITE_SETTINGS` permission that has a completely different permission path.
+
 
 ## License
 
@@ -100,3 +102,5 @@ Warning: even though the application has been granted permissions once, does NOT
 In NativeScript when using the permissions names/strings in your code; they are accessed as: android.**Manifest**.permission.PERMISSION_NAME rather than the android.permission.PERMISSION_NAME that you would put inside the manifest and are listed on the Android documentation site listed above.
 
 The Android manifest that you need to put the permissions in also is located at `/app/App_Resources/Android/main/res/AndroidManifest.xml`
+
+If you need the Android `WRITE_SETTINGS` permission, and other permissions; you need to make TWO separate permission calls.  The `WRITE_SETTINGS` permission must be requested by itself, as it has a different permission path to make it work...

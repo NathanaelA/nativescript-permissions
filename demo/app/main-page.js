@@ -47,6 +47,17 @@ exports.singlePermission = function() {
     });
 };
 
+exports.writePermission = function() {
+    obs.set("message", "Checking permission!");
+    console.log("Permission REQUESTED is", android.Manifest.permission.WRITE_SETTINGS);
+    const perm = permissions.requestPermission(android.Manifest.permission.WRITE_SETTINGS, "I need Access to write the settings!");
+    perm.then(() => {
+        obs.set("message", "WooHoo you granted me permissions!");
+    }).catch(() => {
+        obs.set("message", "Oops, I'm so sad -- no permissions!");
+    });
+};
+
 
 exports.multiPermission = function() {
     obs.set("message", "Checking permissions!");
