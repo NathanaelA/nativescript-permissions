@@ -162,10 +162,10 @@ exports.requestPermissions = request;
  */
 function hasSupportVersion4() {
 	//noinspection JSUnresolvedVariable
-	if (!android.support || !android.support.v4 || !android.support.v4.content || !android.support.v4.content.ContextCompat || !android.support.v4.content.ContextCompat.checkSelfPermission) {
-		return false;
+	if (android.support && android.support.v4 && android.support.v4.content && android.support.v4.content.ContextCompat && android.support.v4.content.ContextCompat.checkSelfPermission) {
+		return true;
 	}
-	return true;
+	return false;
 }
 
 
@@ -175,10 +175,10 @@ function hasSupportVersion4() {
  */
 function hasAndroidX() {
 	//noinspection JSUnresolvedVariable
-	if (!androidx || !androidx.core || !androidx.core.content || !androidx.core.content.ContextCompat || !androidx.core.content.ContextCompat.checkSelfPermission) {
-		return false;
+	if (androidx && androidx.core && androidx.core.content && androidx.core.content.ContextCompat && androidx.core.content.ContextCompat.checkSelfPermission) {
+		return true;
 	}
-	return true;
+	return false;
 }
 
 /**
