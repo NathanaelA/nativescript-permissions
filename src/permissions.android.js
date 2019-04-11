@@ -175,7 +175,7 @@ function hasSupportVersion4() {
  */
 function hasAndroidX() {
 	//noinspection JSUnresolvedVariable
-	if (!androidx || !androidx.core || !androidx.core.content || !androidx.core.content.ContextCompat || !androidx.core.content.ContextCompat.checkSelfPermission) {
+	if (typeof androidx === "undefined" || !androidx || !androidx.core || !androidx.core.content || !androidx.core.content.ContextCompat || !androidx.core.content.ContextCompat.checkSelfPermission) {
 		return false;
 	}
 	return true;
