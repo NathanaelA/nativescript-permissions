@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.3.5                                      Nathan@master-technology.com
+ * Version 1.3.6                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -143,7 +143,7 @@ function addEventListeners(type) {
 
 function setupSupport() {
 	if (hasAndroidX()) {
-		androidSupport = androidx.core;
+		androidSupport = global.androidx.core;
 	} else if (hasSupportVersion4()) {
 		androidSupport = android.support.v4;
 	}
@@ -175,7 +175,7 @@ function hasSupportVersion4() {
  */
 function hasAndroidX() {
 	//noinspection JSUnresolvedVariable
-	if (!androidx || !androidx.core || !androidx.core.content || !androidx.core.content.ContextCompat || !androidx.core.content.ContextCompat.checkSelfPermission) {
+	if (!global.androidx || !global.androidx.core || !global.androidx.core.content || !global.androidx.core.content.ContextCompat || !global.androidx.core.content.ContextCompat.checkSelfPermission) {
 		return false;
 	}
 	return true;

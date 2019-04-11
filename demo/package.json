@@ -2,7 +2,7 @@
   "nativescript": {
     "id": "org.nativescript.demo",
     "tns-android": {
-      "version": "5.3.0-2019-03-19-143503-02"
+      "version": "5.3.1"
     },
     "tns-ios": {
       "version": "5.3.1"
@@ -14,7 +14,7 @@
   "dependencies": {
     "nativescript-permissions": "file:../src",
     "nativescript-theme-core": "~1.0.4",
-    "tns-core-modules": "^5.4.0-androidx-2019-03-22-160602-06"
+    "tns-core-modules": "^5.3.1"
   },
   "devDependencies": {
     "nativescript-dev-webpack": "~0.21.0"
