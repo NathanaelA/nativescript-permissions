@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.3.6                                      Nathan@master-technology.com
+ * Version 1.3.7                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -54,7 +54,7 @@ function handlePermissionResults(args) {
 		const name = args.permissions[i].toString();
 
 		//noinspection RedundantIfStatementJS,JSUnresolvedVariable,JSUnresolvedFunction
-		if (args.grantResults[i] === android.content.pm.PackageManager.PERMISSION_GRANTED) {
+		if (args.grantResults[i] === global.android.content.pm.PackageManager.PERMISSION_GRANTED) {
 			trackingResults[name] = true;
 		} else {
 			trackingResults[name] = false;
@@ -96,7 +96,7 @@ function handleApplicationResults(args) {
 	delete pendingPromises[args.requestCode];
 
 	let trackingResults = promises.results;
-	trackingResults["android.permission.WRITE_SETTINGS"] = android.provider.Settings.System.canWrite(getContext());
+	trackingResults["android.permission.WRITE_SETTINGS"] = global.android.provider.Settings.System.canWrite(getContext());
 
 	// Any Failures
 	let failureCount = 0;
@@ -145,7 +145,7 @@ function setupSupport() {
 	if (hasAndroidX()) {
 		androidSupport = global.androidx.core;
 	} else if (hasSupportVersion4()) {
-		androidSupport = android.support.v4;
+		androidSupport = global.android.support.v4;
 	}
 }
 
@@ -162,7 +162,7 @@ exports.requestPermissions = request;
  */
 function hasSupportVersion4() {
 	//noinspection JSUnresolvedVariable
-	if (!android.support || !android.support.v4 || !android.support.v4.content || !android.support.v4.content.ContextCompat || !android.support.v4.content.ContextCompat.checkSelfPermission) {
+	if (!global.android.support || !global.android.support.v4 || !global.android.support.v4.content || !global.android.support.v4.content.ContextCompat || !global.android.support.v4.content.ContextCompat.checkSelfPermission) {
 		return false;
 	}
 	return true;
@@ -191,7 +191,7 @@ function hasPermission(perm) {
 	if (androidSupport === null) {
 
 		// If we are on Android M we are going to fail the permission, since one of these two methods should have existed!
-		if (android.os.Build.VERSION.SDK_INT >= 23) { return false; }
+		if (global.android.os.Build.VERSION.SDK_INT >= 23) { return false; }
 
 		// If we don't have support v4 or androidx loaded; then we can't run any checks and have to assume
 		// that they have put the permission in the manifest and everything is good to go
@@ -199,7 +199,7 @@ function hasPermission(perm) {
 	}
 
 	// Check for permission
-	return android.content.pm.PackageManager.PERMISSION_GRANTED ===
+	return global.android.content.pm.PackageManager.PERMISSION_GRANTED ===
 		androidSupport.content.ContextCompat.checkSelfPermission(getContext(), perm);
 
 }
@@ -243,7 +243,7 @@ function request(inPerms, explanation) {
 	}
 
 	return new Promise(function (granted, failed) {
-		let totalFailures = 0, totalSuccesses = 0, hasSpecial=0, version=android.os.Build.VERSION.SDK_INT;
+		let totalFailures = 0, totalSuccesses = 0, hasSpecial=0, version=global.android.os.Build.VERSION.SDK_INT;
 		const totalCount = perms.length;
 		let permTracking = [], permResults = {};
 		for (let i = 0; i < totalCount; i++) {
@@ -251,7 +251,7 @@ function request(inPerms, explanation) {
 			// This is a very special permission; have to handle it differently!
 			if (perms[i] === "android.permission.WRITE_SETTINGS" && version >= 23 ) {
 				hasSpecial++;
-				if (android.provider.Settings.System.canWrite(getContext())) {
+				if (global.android.provider.Settings.System.canWrite(getContext())) {
 					permTracking[i] = true;
 					permResults[perms[i]] = true;
 					totalSuccesses++;
@@ -281,7 +281,7 @@ function request(inPerms, explanation) {
 		}
 
 		//noinspection JSUnresolvedVariable
-		if (totalFailures > 0 && android.os.Build.VERSION.SDK_INT < 23) {
+		if (totalFailures > 0 && global.android.os.Build.VERSION.SDK_INT < 23) {
 			// If we are on API < 23 and we get a false back, then this means they forgot to put a manifest permission in...
 			failed(permResults);
 			return;
@@ -316,7 +316,7 @@ function handleWriteRequest(granted, failed, explanation, permResults) {
 		explanation();
 	} else if (explanation && explanation.length) {
 		//noinspection JSUnresolvedVariable,JSUnresolvedFunction
-		const toast = android.widget.Toast.makeText(getContext(), explanation, android.widget.Toast.LENGTH_LONG);
+		const toast = global.android.widget.Toast.makeText(getContext(), explanation, global.android.widget.Toast.LENGTH_LONG);
 		//noinspection JSUnresolvedFunction
 		toast.setGravity((49), 0, 0);
 		toast.show();
@@ -333,8 +333,8 @@ function handleWriteRequest(granted, failed, explanation, permResults) {
 	// Add the ActivityResult permissions handler
 	addEventListeners(2);
 
-	const intent = new android.content.Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
-	intent.setData(android.net.Uri.parse("package:" + activity.getPackageName()));
+	const intent = new global.android.content.Intent(global.android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
+	intent.setData(global.android.net.Uri.parse("package:" + activity.getPackageName()));
 	activity.startActivityForResult(intent, promiseId);
 }
 
@@ -359,7 +359,7 @@ function handleRequest(granted, failed, perms, explanation, permResults, permTra
 					explanation();
 				} else if (explanation && explanation.length) {
 					//noinspection JSUnresolvedVariable,JSUnresolvedFunction
-					const toast = android.widget.Toast.makeText(getContext(), explanation, android.widget.Toast.LENGTH_LONG);
+					const toast = global.android.widget.Toast.makeText(getContext(), explanation, global.android.widget.Toast.LENGTH_LONG);
 					//noinspection JSUnresolvedFunction
 					toast.setGravity((49), 0, 0);
 					toast.show();
