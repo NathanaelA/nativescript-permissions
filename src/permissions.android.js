@@ -162,7 +162,7 @@ exports.requestPermissions = request;
  */
 function hasSupportVersion4() {
 	//noinspection JSUnresolvedVariable
-	if (!global.android.support || !global.android.support.v4 || !global.android.support.v4.content || !global.android.support.v4.content.ContextCompat || !global.android.support.v4.content.ContextCompat.checkSelfPermission) {
+	if (!global.android || !global.android.support || !global.android.support.v4 || !global.android.support.v4.content || !global.android.support.v4.content.ContextCompat || !global.android.support.v4.content.ContextCompat.checkSelfPermission) {
 		return false;
 	}
 	return true;
