@@ -12,7 +12,7 @@
 /* jshint camelcase: false */
 /* global android, Promise, java, require, exports */
 
-const application = require('application');
+const application = require('tns-core-modules/application');
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 if (typeof application.AndroidApplication.activityRequestPermissionsEvent === 'undefined') {
