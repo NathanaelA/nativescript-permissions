@@ -32,8 +32,9 @@ This requires NativeScript 2.0 or greater
 
 ## Installation 
 
+```
 tns plugin add nativescript-permissions
-
+```
 
 ## Usage
 
