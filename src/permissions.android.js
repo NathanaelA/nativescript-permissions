@@ -1,11 +1,11 @@
 /**********************************************************************************
- * (c) 2016-2019, Master Technology
+ * (c) 2016-2020, Master Technology
  * Licensed under the MIT license or contact me for a Support or Commercial License
  *
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.3.7                                      Nathan@master-technology.com
+ * Version 1.3.9                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -37,6 +37,7 @@ function handlePermissionResults(args) {
 	// We have either gotten a promise from somewhere else or a bug has occurred and android has called us twice
 	// In either case we will ignore it...
 	if (!promises || typeof promises.granted !== 'function') {
+		console.warn("Handle Permissions was called with unknown request code", args.requestCode);
 		return;
 	}
 
@@ -88,6 +89,7 @@ function handleApplicationResults(args) {
 	// We have either gotten a promise from somewhere else or a bug has occurred and android has called us twice
 	// In either case we will ignore it...
 	if (!promises || typeof promises.granted !== 'function') {
+		console.warn("Handle Application results was called with unknown request code", args.requestCode);
 		return;
 	}
 
@@ -189,13 +191,19 @@ function hasAndroidX() {
 function hasPermission(perm) {
 
 	if (androidSupport === null) {
-
 		// If we are on Android M we are going to fail the permission, since one of these two methods should have existed!
 		if (global.android.os.Build.VERSION.SDK_INT >= 23) { return false; }
 
 		// If we don't have support v4 or androidx loaded; then we can't run any checks and have to assume
 		// that they have put the permission in the manifest and everything is good to go
 		return true;
+	}
+
+	// Special Setting on Android OS 23 and up
+	if (perm === "android.permission.WRITE_SETTINGS") {
+		if (global.android.os.Build.VERSION.SDK_INT >= 23) {
+			return global.android.provider.Settings.System.canWrite(getContext());
+		}
 	}
 
 	// Check for permission
@@ -260,17 +268,18 @@ function request(inPerms, explanation) {
 					permResults[perms[i]] = false;
 					totalFailures++;
 				}
-			} else
-
-			// Check if we already have permissions, then we can grant automatically
-			if (hasPermission(perms[i])) {
-				permTracking[i] = true;
-				permResults[perms[i]] = true;
-				totalSuccesses++;
 			} else {
-				permTracking[i] = false;
-				permResults[perms[i]] = false;
-				totalFailures++;
+
+				// Check if we already have permissions, then we can grant automatically
+				if (hasPermission(perms[i])) {
+					permTracking[i] = true;
+					permResults[perms[i]] = true;
+					totalSuccesses++;
+				} else {
+					permTracking[i] = false;
+					permResults[perms[i]] = false;
+					totalFailures++;
+				}
 			}
 		}
 
@@ -289,7 +298,7 @@ function request(inPerms, explanation) {
 
 		if (hasSpecial) {
 			// Because this permission has to go through a completely different flow; we can currently only handle it alone...
-			// TODO: Possible fix; add a second level of callbacks; so that then when both are resovled; then the main promise is resolved???
+			// TODO: Possible fix; add a second level of callbacks; so that then when both are resolved; then the main promise is resolved???
 			if (totalCount > 1) {
 				throw new Error("You can only request WRITE_SETTINGS permission by itself!")
 			}

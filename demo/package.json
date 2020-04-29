@@ -2,10 +2,10 @@
   "nativescript": {
     "id": "org.nativescript.demo",
     "tns-android": {
-      "version": "6.0.0"
+      "version": "6.5.0"
     },
     "tns-ios": {
-      "version": "6.0.1"
+      "version": "6.5.0"
     }
   },
   "description": "NativeScript Application",
@@ -14,10 +14,10 @@
   "dependencies": {
     "nativescript-permissions": "../src",
     "nativescript-theme-core": "~1.0.4",
-    "tns-core-modules": "6.0.1"
+    "tns-core-modules": "~6.5.0"
   },
   "devDependencies": {
-    "nativescript-dev-webpack": "1.0.1"
+    "nativescript-dev-webpack": "~1.5.1"
   },
   "gitHead": "803cec054c44c99eaa59cdc267993e6346f6cb3a",
   "readme": "NativeScript Application"
