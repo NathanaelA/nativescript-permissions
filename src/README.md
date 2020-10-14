@@ -9,7 +9,7 @@ Now has support for AndroidX (NativeScript 6.0) and still works all the way back
 
 Has a dummy library for iOS so that if ask it for any android permissions; it will resolve every one of them as true...
 
-This plugin also has built in support for the Android `WRITE_SETTINGS` permission that has a completely different permission path.
+This plugin also has built in support for the Android `WRITE_SETTINGS` & `SYSTEM_ALERT_WINDOW` permission that has a completely different permission path.
 
 
 ## License
@@ -70,6 +70,20 @@ This simplifies the checks and allows you to have two courses of action dependin
 - **permissionName** - The permission you are requesting.
 - **returns** Boolean - true or false
 
+#### permissions.hasPermissions(\[permissionName, permissionName, ...]);
+- **permissionName(s)** - The permission(s) you are requesting.
+- **returns** Object
+
+```js
+  {
+    checked: 0, // Total number of permissions checked.
+    success: 0, // Number of permissions you have
+    failed: 0,  // Number of permissions you do NOT have
+    permissionName(s): false, // Each permission with it status
+  }
+```
+
+
 #### \<Promise> = permissions.requestPermission(permissionName, explanation);
 - **\<Promise>** - the **.then()** path will be permission granted, the **.catch()** will be permission denied
 - **permissionName** - The permission you are requesting - REQUIRED
@@ -81,7 +95,7 @@ This simplifies the checks and allows you to have two courses of action dependin
 - **permissionName(s)** - The ARRAY of permissions you are requesting - REQUIRED
 - **explanation** - This can be either a string that will show as a toast at the top of the screen **or** this can be a function callback that will be called so that you can show whatever you want. - OPTIONAL
 
-The granted or failed promise will return an object keyed to the your permissionName Like so:
+The granted or failed promise will return an object keyed to your permissionName Like so:
 
 ```js
 {
@@ -104,4 +118,5 @@ In NativeScript when using the permissions names/strings in your code; they are 
 
 The Android manifest that you need to put the permissions in also is located at `/app/App_Resources/Android/main/res/AndroidManifest.xml`
 
-If you need the Android `WRITE_SETTINGS` permission, and other permissions; you need to make TWO separate permission calls.  The `WRITE_SETTINGS` permission must be requested by itself, as it has a different permission path to make it work...
+## Special Permissions
+If you need the Android `WRITE_SETTINGS` or `SYSTEM_ALERT_WINDOW` permission, and any other permissions; you need to make TWO separate permission calls.  The `WRITE_SETTINGS` and `SYSTEM_ALERT_WINDOW` permission must be requested by itself, as they have a different permission path to make it work...

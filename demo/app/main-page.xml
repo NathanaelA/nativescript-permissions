@@ -25,10 +25,10 @@ https://docs.nativescript.org/ui/components.
     class names available for styling your app at https://docs.nativescript.org/ui/theme.
     -->
     <StackLayout class="p-20">
-            <Label text="Ask for" class="title"/>
-            <Button text="Single Permission" tap="singlePermission" />
-            <Button text="Write Permission" tap="writePermission" />
-            <Button text="Multi Permissions" tap="multiPermission" />
-            <Label text="{{ message }}" class="message" textWrap="true"/>
+        <Label text="Ask for" class="title"/>
+        <Button text="Single Permission" tap="singlePermission" backgroundColor="{{bgSingle}}"/>
+        <Button text="Write Permission" tap="writePermission" backgroundColor="{{bgWrite}}"/>
+        <Button text="Multi Permissions" tap="multiPermission" backgroundColor="{{bgMulti}}" />
+        <Label text="{{ message }}" class="message" textWrap="true"/>
     </StackLayout>
 </Page>

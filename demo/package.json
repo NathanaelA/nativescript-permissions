@@ -1,24 +1,36 @@
 {
-  "nativescript": {
-    "id": "org.nativescript.demo",
-    "tns-android": {
-      "version": "6.5.0"
-    },
-    "tns-ios": {
-      "version": "6.5.0"
-    }
-  },
+  "name": "@nativescript/template-hello-world",
+  "main": "app.js",
+  "version": "7.0.1",
+  "author": "NativeScript Team <oss@nativescript.org>",
   "description": "NativeScript Application",
   "license": "SEE LICENSE IN <your-license-filename>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "nstudio",
+    "nativescript",
+    "mobile",
+    "{N}",
+    "tns",
+    "template"
+  ],
   "repository": "<fill-your-repository-here>",
+  "bugs": {
+    "url": "https://github.com/NativeScript/NativeScript/issues"
+  },
+  "homepage": "https://github.com/NativeScript/nativescript-app-templates",
   "dependencies": {
-    "nativescript-permissions": "../src",
-    "nativescript-theme-core": "~1.0.4",
-    "tns-core-modules": "~6.5.0"
+    "@nativescript/core": "~7.0.0",
+    "@nativescript/theme": "~2.3.0",
+    "nativescript-permissions": "file:../src"
   },
   "devDependencies": {
-    "nativescript-dev-webpack": "~1.5.1"
+    "@nativescript/android": "7.0.0",
+    "@nativescript/webpack": "~3.0.0"
   },
-  "gitHead": "803cec054c44c99eaa59cdc267993e6346f6cb3a",
+  "gitHead": "3c1e356f5a73a8feb68acc40b3c7c02c9d18d7f0",
+  "private": "true",
   "readme": "NativeScript Application"
 }

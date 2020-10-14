@@ -5,14 +5,14 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.3.9                                      Nathan@master-technology.com
+ * Version 1.3.12                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
 /* jshint camelcase: false */
 /* global android, Promise, java, require, exports */
 
-const application = require('tns-core-modules/application');
+const application = require('@nativescript/core/application');
 
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 if (typeof application.AndroidApplication.activityRequestPermissionsEvent === 'undefined') {
@@ -98,7 +98,7 @@ function handleApplicationResults(args) {
 	delete pendingPromises[args.requestCode];
 
 	let trackingResults = promises.results;
-	trackingResults["android.permission.WRITE_SETTINGS"] = global.android.provider.Settings.System.canWrite(getContext());
+	trackingResults[promises.special] = hasPermission(promises.special);
 
 	// Any Failures
 	let failureCount = 0;
@@ -154,6 +154,7 @@ function setupSupport() {
 setupSupport();
 
 exports.hasPermission = hasPermission;
+exports.hasPermissions = hasPermissions;
 exports.requestPermission = request;
 exports.requestPermissions = request;
 
@@ -183,12 +184,35 @@ function hasAndroidX() {
 	return true;
 }
 
+function hasPermissions(perms) {
+	const results={success: 0, failed: 0, checked: 0};
+	if (Array.isArray(perms)) {
+		results.checked = perms.length;
+		for (let i=0;i<perms.length;i++) {
+			const val = hasPermission(perms[i]);
+			results[perms[i]] = val;
+			if (val) {
+				results.success++;
+			} else {
+				results.failed++;
+			}
+		}
+		return results;
+	} else {
+		return hasPermissions([perms]);
+	}
+}
+
 /**
  *
  * @param perm
  * @returns {boolean}
  */
 function hasPermission(perm) {
+
+	if (Array.isArray(perm)) {
+		return hasPermissions(perm);
+	}
 
 	if (androidSupport === null) {
 		// If we are on Android M we are going to fail the permission, since one of these two methods should have existed!
@@ -200,9 +224,12 @@ function hasPermission(perm) {
 	}
 
 	// Special Setting on Android OS 23 and up
-	if (perm === "android.permission.WRITE_SETTINGS") {
-		if (global.android.os.Build.VERSION.SDK_INT >= 23) {
+	if (global.android.os.Build.VERSION.SDK_INT >= 23) {
+		if (perm === "android.permission.WRITE_SETTINGS") {
 			return global.android.provider.Settings.System.canWrite(getContext());
+		}
+		if (perm === "android.permission.SYSTEM_ALERT_WINDOW") {
+			return global.android.provider.Settings.canDrawOverlays(getContext());
 		}
 	}
 
@@ -258,7 +285,7 @@ function request(inPerms, explanation) {
 
 			// This is a very special permission; have to handle it differently!
 			if (perms[i] === "android.permission.WRITE_SETTINGS" && version >= 23 ) {
-				hasSpecial++;
+				hasSpecial=1;
 				if (global.android.provider.Settings.System.canWrite(getContext())) {
 					permTracking[i] = true;
 					permResults[perms[i]] = true;
@@ -268,8 +295,18 @@ function request(inPerms, explanation) {
 					permResults[perms[i]] = false;
 					totalFailures++;
 				}
+			} else if (perms[i] === 'android.permission.SYSTEM_ALERT_WINDOW' && version >= 23) {
+				hasSpecial=2;
+				if (global.android.provider.Settings.canDrawOverlays(getContext())) {
+					permTracking[i] = true;
+					permResults[perms[i]] = true;
+					totalSuccesses++;
+				} else {
+					permTracking[i] = false;
+					permResults[perms[i]] = false;
+					totalFailures++;
+				}
 			} else {
-
 				// Check if we already have permissions, then we can grant automatically
 				if (hasPermission(perms[i])) {
 					permTracking[i] = true;
@@ -300,12 +337,14 @@ function request(inPerms, explanation) {
 			// Because this permission has to go through a completely different flow; we can currently only handle it alone...
 			// TODO: Possible fix; add a second level of callbacks; so that then when both are resolved; then the main promise is resolved???
 			if (totalCount > 1) {
-				throw new Error("You can only request WRITE_SETTINGS permission by itself!")
+				throw new Error("You can only request WRITE_SETTINGS or SYSTEM_ALERT_WINDOW permission by itself!")
 			}
-			handleWriteRequest(granted, failed, explanation, permResults);
+			switch (hasSpecial) {
+				case 1: handleWriteRequest(granted, failed, explanation, permResults); break;
+				case 2: handleOverlayRequest(granted, failed, explanation, permResults); break;
+			}
 			return;
 		}
-
 
 		handleRequest(granted, failed, perms, explanation, permResults, permTracking);
 	});
@@ -337,7 +376,7 @@ function handleWriteRequest(granted, failed, explanation, permResults) {
 	// Wrap the promise id; as the number can't be bigger than the lower 16 bits
 	if (promiseId > 65535) { promiseId = 1; }
 
-	pendingPromises[promiseId] = {granted: granted, failed: failed, results: permResults};
+	pendingPromises[promiseId] = {granted: granted, failed: failed, results: permResults, special: "android.permission.WRITE_SETTINGS"};
 
 	// Add the ActivityResult permissions handler
 	addEventListeners(2);
@@ -346,6 +385,43 @@ function handleWriteRequest(granted, failed, explanation, permResults) {
 	intent.setData(global.android.net.Uri.parse("package:" + activity.getPackageName()));
 	activity.startActivityForResult(intent, promiseId);
 }
+
+function handleOverlayRequest(granted, failed, explanation, permResults) {
+	const activity = application.android.foregroundActivity || application.android.startActivity;
+	if (activity == null) {
+		// Throw this off into the future since an activity is not available....
+		setTimeout(function() {
+			handleOverlayRequest(granted, failed, explanation, permResults);
+		}, 250);
+		return;
+	}
+
+	if (typeof explanation === "function") {
+		explanation();
+	} else if (explanation && explanation.length) {
+		//noinspection JSUnresolvedVariable,JSUnresolvedFunction
+		const toast = global.android.widget.Toast.makeText(getContext(), explanation, global.android.widget.Toast.LENGTH_LONG);
+		//noinspection JSUnresolvedFunction
+		toast.setGravity((49), 0, 0);
+		toast.show();
+	}
+
+	// Ask for permissions
+	promiseId++;
+
+	// Wrap the promise id; as the number can't be bigger than the lower 16 bits
+	if (promiseId > 65535) { promiseId = 1; }
+
+	pendingPromises[promiseId] = {granted: granted, failed: failed, results: permResults, special: "android.permission.SYSTEM_ALERT_WINDOW"};
+
+	// Add the ActivityResult permissions handler
+	addEventListeners(2);
+
+	const intent = new global.android.content.Intent(global.android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+	intent.setData(global.android.net.Uri.parse("package:" + activity.getPackageName()));
+	activity.startActivityForResult(intent, promiseId);
+}
+
 
 function handleRequest(granted, failed, perms, explanation, permResults, permTracking) {
 	//noinspection JSUnresolvedVariable

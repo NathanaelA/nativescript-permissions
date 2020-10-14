@@ -1,11 +1,11 @@
 /**********************************************************************************
- * (c) 2016-2019, Master Technology
+ * (c) 2016-2020, Master Technology
  * Licensed under the MIT license or contact me for a Support or Commercial License
  *
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 0.0.2                                      Nathan@master-technology.com
+ * Version 0.0.3                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -28,5 +28,6 @@ const dummyRequest = function(inPerms) {
 };
 
 exports.hasPermission = function() { return true; };
+exports.hasPermissions = function() { return {success: 0, failed: 0, checked: 0}; };
 exports.requestPermission = dummyRequest;
 exports.requestPermissions = dummyRequest;
