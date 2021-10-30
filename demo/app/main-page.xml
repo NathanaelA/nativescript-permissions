@@ -27,7 +27,7 @@ https://docs.nativescript.org/ui/components.
     <StackLayout class="p-20">
         <Label text="Ask for" class="title"/>
         <Button text="Single Permission" tap="singlePermission" backgroundColor="{{bgSingle}}"/>
-        <Button text="Write Permission" tap="writePermission" backgroundColor="{{bgWrite}}"/>
+        <Button text="{{custompermission}}" tap="writePermission" backgroundColor="{{bgWrite}}"/>
         <Button text="Multi Permissions" tap="multiPermission" backgroundColor="{{bgMulti}}" />
         <Label text="{{ message }}" class="message" textWrap="true"/>
     </StackLayout>

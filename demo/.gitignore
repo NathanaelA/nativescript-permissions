@@ -3,9 +3,6 @@ hooks/
 node_modules/
 platforms/
 
-# NativeScript Template
-*.js.map
-
 # Logs
 logs
 *.log
@@ -24,6 +21,8 @@ tmp/
 typings/
 
 # Visual Studio Code
-.vscode/
-
-package-lock.json
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

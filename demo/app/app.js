@@ -10,7 +10,7 @@ const { Application } = require("@nativescript/core");
 
 /*
  application.on(application.launchEvent, function() {
- const permissions = require("nativescript-permissions");
+ const permissions = require("@master.technology/permissions");
  const perm = permissions.requestPermission(android.Manifest.permission.READ_CONTACTS, "I need Read Contact!");
  perm.then(() => {
  console.log("WooHoo, Perms");

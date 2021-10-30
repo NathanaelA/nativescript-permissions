@@ -1,11 +1,11 @@
 /**********************************************************************************
- * (c) 2016-2020, Master Technology
+ * (c) 2016-2021, Master Technology
  * Licensed under the MIT license or contact me for a Support or Commercial License
  *
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.3.12                                      Nathan@master-technology.com
+ * Version 2.0.0                                      	  Nathan@master.technology
  *********************************************************************************/
 "use strict";
 
@@ -18,6 +18,25 @@ const application = require('@nativescript/core/application');
 if (typeof application.AndroidApplication.activityRequestPermissionsEvent === 'undefined') {
 	throw new Error("You must be using at least version 2.0 of the TNS runtime and core-modules!");
 }
+
+const PERMISSIONS = Object.freeze({
+	LOCATION: 'android.permission.ACCESS_FINE_LOCATION',
+	CAMERA: 'android.permission.CAMERA',
+	PHOTO: 'android.Manifest.permission.WRITE_EXTERNAL_STORAGE',
+	MICROPHONE: 'android.permission.RECORD_AUDIO',
+	CONTACTS: 'android.permission.WRITE_CONTACTS',
+	CALENDAR: 'android.permission.WRITE_CALENDAR',
+	BLUETOOTH: 'android.permission.BLUETOOTH_CONNECT',
+	MEDIA: 'android.Manifest.permission.WRITE_EXTERNAL_STORAGE',
+
+	READ_CALENDAR: 'android.permission.READ_CALENDAR',
+	READ_CONTACTS: 'android.permission.READ_CONTACTS',
+	READ_EXTERNAL_STORAGE: 'android.permission.READ_EXTERNAL_STORAGE',
+	WRITE_EXTERNAL_STORAGE: 'android.permission.WRITE_EXTERNAL_STORAGE',
+
+	// Compatibility
+	APP_TRACKING: 'approved',
+});
 
 // Variables to track any pending promises
 let pendingPromises = {}, promiseId = 3000, eventsAdded=0;
@@ -119,7 +138,6 @@ function handleApplicationResults(args) {
 
 }
 
-
 function removeEventListeners() {
 	if (!eventsAdded) { return; }
 	application.android.off(application.AndroidApplication.activityRequestPermissionsEvent, handlePermissionResults);
@@ -157,6 +175,7 @@ exports.hasPermission = hasPermission;
 exports.hasPermissions = hasPermissions;
 exports.requestPermission = request;
 exports.requestPermissions = request;
+exports.PERMISSIONS = PERMISSIONS;
 
 
 /**
@@ -170,7 +189,6 @@ function hasSupportVersion4() {
 	}
 	return true;
 }
-
 
 /**
  * Checks to see if androidx is installed and has the proper calls for it.
@@ -204,7 +222,7 @@ function hasPermissions(perms) {
 }
 
 /**
- *
+ * hasPermissions
  * @param perm
  * @returns {boolean}
  */
@@ -213,6 +231,9 @@ function hasPermission(perm) {
 	if (Array.isArray(perm)) {
 		return hasPermissions(perm);
 	}
+
+	if (perm === "approved") { return true; }
+	if (perm.startsWith("ios.")) { return false; }
 
 	if (androidSupport === null) {
 		// If we are on Android M we are going to fail the permission, since one of these two methods should have existed!
@@ -266,8 +287,6 @@ function getContext() {
 
 	return ctx;
 }
-
-
 
 function request(inPerms, explanation) {
 	let perms;
@@ -421,7 +440,6 @@ function handleOverlayRequest(granted, failed, explanation, permResults) {
 	intent.setData(global.android.net.Uri.parse("package:" + activity.getPackageName()));
 	activity.startActivityForResult(intent, promiseId);
 }
-
 
 function handleRequest(granted, failed, perms, explanation, permResults, permTracking) {
 	//noinspection JSUnresolvedVariable

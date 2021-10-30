@@ -30,6 +30,14 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera Perm</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Contact Perms</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location Perms</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>User Tracking Perms</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -1,8 +1,8 @@
-# NativeScript-Permissions
+# @Master.Technology/Permissions
 
 
 ## Developed by
-[![MasterTech](https://plugins.nativescript.rocks/i/mtns.png)](https://plugins.nativescript.rocks/mastertech-nstudio)
+[![MasterTech](https://plugins.nativescript.rocks/i/mtns.png)](https://plugins.nativescript.rocks/mastertechnology)
 
 
 
