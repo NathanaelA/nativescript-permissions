@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 2.0.0                                          Nathan@master.technology
+ * Version 2.0.1                                          Nathan@master.technology
  *********************************************************************************/
 "use strict";
 
@@ -64,7 +64,7 @@ class LOCATION {
                 locationManagerDidChangeAuthorizationStatus: function (manager, status) {
                     // We will get a Status=0 before we get the first real status...
                     if (status === 0) { return; }
-                    const owner = this._owner?.get();
+                    const owner = this._owner && this._owner.get();
                     if (owner) {
                         if (LOCATION.has()) {
                             owner._resolve(true);
@@ -266,7 +266,7 @@ class BLUETOOTH {
             DELEGATES.BLUETOOTH = NSObject.extend({
                 _owner: null,
                 peripheralManagerDidUpdateState: function (manager) {
-                    let owner = this._owner?.get();
+                    let owner = this._owner && this._owner.get();
                     if (owner) {
                         if (BLUETOOTH.has()) {
                             owner._resolve(true);

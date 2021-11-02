@@ -1,0 +1,2 @@
+v2.00 - Added iOS support
+v2.01 - Remove ?. and changed to older style as some older tool chains were breaking on valid JS code.
