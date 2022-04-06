@@ -34,6 +34,10 @@ const PERMISSIONS = Object.freeze({
 	READ_EXTERNAL_STORAGE: 'android.permission.READ_EXTERNAL_STORAGE',
 	WRITE_EXTERNAL_STORAGE: 'android.permission.WRITE_EXTERNAL_STORAGE',
 
+	// Android 12
+	BLUETOOTH_SCAN: 'android.permission.BLUETOOTH_SCAN',
+	BLUETOOTH_ADVERTISE: 'android.permission.BLUETOOTH_ADVERTISE',
+
 	// Compatibility
 	APP_TRACKING: 'approved',
 });

@@ -28,4 +28,8 @@ export const PERMISSIONS: {
     READ_CONTACTS: string,
     READ_EXTERNAL_STORAGE: string,
     WRITE_EXTERNAL_STORAGE: string,
+
+    // Android 12
+    BLUETOOTH_SCAN: string,
+    BLUETOOTH_ADVERTISE: string,
 };
